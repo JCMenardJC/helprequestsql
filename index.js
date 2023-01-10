@@ -4,15 +4,16 @@ require('dotenv').config() // permet de cacher les donnée dans un autrs fichier
 const bodyParser = require('body-parser')
 const { Client } = require('pg');
 const fs = require('fs');
+require('dotenv').config();
 
 // declarations
 const app = express();
 const port = 8000;
 const client = new Client({
-    user: 'postgres',
-    host: 'localhost',
-    database: 'HelpRequest',
-    password: 'BriefsSimplon@2023',
+    user: process.env.DB_USERNAME,
+    host: process.env.DB_HOST,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASSWORD,
     port: 5432,
 });
 
@@ -27,7 +28,7 @@ app.get('/', (req, res) => {
     res.send('Hello World!')
 });
 
-app.get('/ticket', async (req, res) => {
+app.get('/api/ticket', async (req, res) => {
     try {
         const data = await client.query('SELECT * FROM ticket');
         res.status(200).json({ status: "SUCCESS", data: data.rows });
@@ -38,7 +39,7 @@ app.get('/ticket', async (req, res) => {
     }
 });
 
-app.get('/ticket/:id', async (req, res) => {
+app.get('/api/ticket/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const data = await client.query('SELECT * FROM ticket where id = $1', [id]);
@@ -55,7 +56,7 @@ app.get('/ticket/:id', async (req, res) => {
     }
 });
 
-app.post('/ticket', async (req, res) => {
+app.post('/api/ticket', async (req, res) => {
     console.log(req.body);
 
     try {
@@ -71,7 +72,7 @@ app.post('/ticket', async (req, res) => {
     }
 });
 
-app.delete('/ticket/:id', async (req, res) => {
+app.delete('/api/ticket/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const data = await client.query('DELETE FROM ticket WHERE id = $1', [id]);
