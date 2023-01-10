@@ -33,7 +33,7 @@ app.get('/ticket', async (req, res) => {
         res.status(200).json({ status: "SUCCESS", data: data.rows });
     }
     catch (err) {
-        res.status(404).json({ status: "oups", data: data.rows });
+        res.status(404).json({ status: "Not Found", data: undefined });
         console.log(err.stack)
     }
 });
@@ -47,7 +47,7 @@ app.get('/ticket/:id', async (req, res) => {
     }
     catch (err) {
         console.log(err.stack)
-        res.status(404).json({ status: "oups", data: data.rows });
+        res.status(404).json({ status: "Not Found", data: undefined });
     }
 });
 
@@ -63,7 +63,7 @@ app.post('/ticket', async (req, res) => {
     }
     catch (err) {
         console.log(err.stack);
-        res.status(404).json({ status: "oups", data: data.rows })
+        res.status(404).json({ status: "Not Found", data: undefined })
     }
 });
 
@@ -76,7 +76,7 @@ app.delete('/ticket/:id', async (req, res) => {
     }
     catch (err) {
         console.log(err.stack);
-        res.status(404).json({ status: "oups", data: data.rows })
+        res.status(404).json({ status: "Not Found", data: undefined })
     }
 });
 // ecoute le port 8000
