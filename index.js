@@ -33,7 +33,7 @@ app.get('/ticket', async (req, res) => {
         res.status(200).json({ status: "SUCCESS", data: data.rows });
     }
     catch (err) {
-        res.status(404).json({ status: "Not Found", data: undefined });
+        res.status(404).json({ status: "Not Found", data: null });
         console.log(err.stack)
     }
 });
@@ -42,12 +42,16 @@ app.get('/ticket/:id', async (req, res) => {
     const id = req.params.id;
     try {
         const data = await client.query('SELECT * FROM ticket where id = $1', [id]);
+        console.log(data.rowCount)
 
-        res.status(200).json({ status: "SUCCESS", data: data.rows });
+        if (data.rowCount > 0) {res.status(200).json({ status: "SUCCESS", data: data.rows });}
+        
+        else { res.status(404).json({status: "FAIL", data: null }) }
+        
     }
     catch (err) {
         console.log(err.stack)
-        res.status(404).json({ status: "Not Found", data: undefined });
+        res.status(404).json({ status: "Not Found", data: null });
     }
 });
 
@@ -63,7 +67,7 @@ app.post('/ticket', async (req, res) => {
     }
     catch (err) {
         console.log(err.stack);
-        res.status(404).json({ status: "Not Found", data: undefined })
+        res.status(404).json({ status: "Not Found", data: null })
     }
 });
 
@@ -76,7 +80,7 @@ app.delete('/ticket/:id', async (req, res) => {
     }
     catch (err) {
         console.log(err.stack);
-        res.status(404).json({ status: "Not Found", data: undefined })
+        res.status(404).json({ status: "Not Found", data: null })
     }
 });
 // ecoute le port 8000
